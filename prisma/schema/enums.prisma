@@ -1,0 +1,13 @@
+enum ActiveStatus{
+    ACTIVE
+    BLOCKED
+}
+
+enum Role{
+    Tenant	
+    Landlord	
+    Admin
+}
+enum Profile{
+    profileId
+}
