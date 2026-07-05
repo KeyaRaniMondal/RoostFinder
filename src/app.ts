@@ -1,19 +1,26 @@
-import express,{Application} from 'express'
-import {Request,Response} from 'express'
+import express, { Application, Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-const app:Application=express()
+import config from './config'
+import { userRoutes } from './modules/user/user.route'
 
-//middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(cors({
-    origin:'config.app_url',
-    credentials:true
-}))
+const app: Application = express()
 
-app.get('/',(req:Request,res:Response)=>{
-    res.send('Hello, World!')
+// middleware
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
+app.use(
+  cors({
+    origin: config.APP_URL,
+    credentials: true,
+  })
+)
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello, World!')
 })
+
+app.use('/api/users', userRoutes)
+
 export default app
