@@ -22,7 +22,7 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
       name,
       email,
       password: hashedPassword,
-      Role: 'USER'
+      updatedAt: new Date(),
     }
   })
 

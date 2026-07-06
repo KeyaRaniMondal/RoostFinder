@@ -21,6 +21,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, World!')
 })
 
-app.use('/api/users', userRoutes)
+app.use('/api/auth', userRoutes)
 
 export default app
