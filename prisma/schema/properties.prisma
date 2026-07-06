@@ -1,0 +1,41 @@
+model property {
+  id            String   @id @default(cuid())
+
+  title         String
+  description   String
+
+  propertyType  PropertyType
+  purpose       PropertyPurpose
+
+  price         Float
+
+  country       String
+  division      String
+  district      String
+  city          String
+  area          String
+  address       String
+
+  bedrooms      Int?
+  bathrooms     Int?
+  balconies     Int?
+  floor         Int?
+  totalFloors   Int?
+  areaSize      Float?
+  areaUnit      String?
+
+  furnished     Boolean @default(false)
+
+  images         String[]
+  amenities      String[]
+
+  status        PropertyStatus @default(ACTIVE)
+
+  ownerId       String
+  owner         User @relation(fields: [ownerId], references: [id])
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("properties")
+}
