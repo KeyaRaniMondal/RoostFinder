@@ -8,6 +8,3 @@ enum Role{
     Landlord	
     Admin
 }
-enum Profile{
-    profileId
-}

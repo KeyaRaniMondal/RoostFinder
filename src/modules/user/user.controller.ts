@@ -7,6 +7,7 @@ import { sendResponse } from '../../utils/sendResponse'
 const registerUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body
   const user = await userService.registerUserIntoDB(payload)
+
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
@@ -28,6 +29,18 @@ const registerUser = catchAsync(async (req: Request, res: Response, next: NextFu
 //   })
 // }
 
+
+const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const profile=await userService.getMyProfileFromDb(req.user?.id as string)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Profile retrieved successfully',
+    data: { profile }
+  })
+})
+
 export const userController = {
   registerUser,
+  getMyProfile
 }
