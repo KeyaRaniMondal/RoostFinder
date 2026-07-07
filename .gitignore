@@ -2,3 +2,32 @@ node_modules
 .env
 dist
 prisma/generated
+
+
+router.get("/", postController.getAllPosts);
+
+router.get(
+    "/stats", 
+    auth(Role.Admin),
+    postController.getPostsStats
+);
+
+router.get(
+    "/my-posts",
+    auth(Role.Tenant, Role.Landlord, Role.Admin),
+    postController.getMyPosts
+);
+
+router.get("/:postId", postController.getPostById);
+
+router.patch(
+    "/:postId", 
+    auth(Role.Tenant, Role.Landlord, Role.Admin), 
+    postController.updatePost
+);
+
+router.delete(
+    "/:postId", 
+    auth(Role.Tenant, Role.Landlord, Role.Admin), 
+    postController.deletePost
+);

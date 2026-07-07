@@ -6,10 +6,9 @@ model User {
     activeStatus ActiveStatus @default(ACTIVE)
     role         Role         @default(Tenant)
     createdAt    DateTime     @default(now())
-    updatedAt    DateTime
+    updatedAt DateTime @updatedAt
     profiel      Profile?
     landLoard    Landlord?
-    properties   property[]
 
     @@map("users")
 }

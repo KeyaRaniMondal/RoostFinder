@@ -29,8 +29,6 @@ model property {
 
   status        PropertyStatus @default(ACTIVE)
 
-  ownerId       String
-  owner         User @relation(fields: [ownerId], references: [id])
   landlordId    String
   landlord      Landlord @relation(fields: [landlordId], references: [id], onDelete: Cascade)
 
