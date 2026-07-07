@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import { IrentalRequest } from "./rental.interface";
 
+//ceate a rental request
 const createRentalRequest = async (tenantId: string, payload: IrentalRequest) => {
     const property = await prisma.property.findUnique({
         where: { id: payload.propertyId },
@@ -35,10 +36,44 @@ const createRentalRequest = async (tenantId: string, payload: IrentalRequest) =>
     return rentalRequest;
 };
 
+//get all rental requests for a tenant
+const getMyRentalRequests = async (tenantId: string) => {
+    const requests = await prisma.rentalRequest.findMany({
+        where: { tenantId },
+        include: {
+            property: true,
+        },
+        orderBy: { createdAt: "desc" },
+    });
 
+    return requests;
+};
 
+//rental request details
+const getSingleRentalRequestDetails = async (tenantId: string, id: string) => {
+    const request = await prisma.rentalRequest.findUnique({
+        where: { id },
+        include: {
+            property: {
+                include: { landlord: true },
+            },
+        },
+    });
 
+    if (!request) {
+        throw new Error("Rental request not found");
+    }
+
+    // the tenant can only view own request
+    if (request.tenantId !== tenantId) {
+        throw new Error("You are not authorized to view this rental request");
+    }
+
+    return request;
+};
 
 export const rentalService = {
-    createRentalRequest
+    createRentalRequest,
+    getMyRentalRequests,
+    getSingleRentalRequestDetails
 };

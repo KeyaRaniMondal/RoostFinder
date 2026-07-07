@@ -4,5 +4,4 @@ dist
 prisma/generated
 
 
-router.get("/", auth(), rentalController.getMyRentalRequests);
-router.get("/:id", auth(), rentalController.getSingleRentalRequest);
+
