@@ -9,6 +9,6 @@ model User {
     updatedAt DateTime @updatedAt
     profiel      Profile?
     landLoard    Landlord?
-
+ rentalRequests RentalRequest[]
     @@map("users")
 }
