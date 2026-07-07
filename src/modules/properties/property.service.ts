@@ -97,7 +97,27 @@ const getAllProperties = async (query: Record<string, any>) => {
     };
 };
 
+//get property by id
+const getPropertyById =async (id: string) => {
+    if (!id) {
+        throw new Error("Property Id is required");
+    }
+
+    const property = await prisma.property.findUnique({
+        where: { id },
+        include: { landlord: true },
+    });
+
+    if (!property) {
+        throw new Error("Property not found");
+    }
+
+    return property;
+};
+
+
 export const propertyService = {
     createProperty,
     getAllProperties,
+    getPropertyById
 };

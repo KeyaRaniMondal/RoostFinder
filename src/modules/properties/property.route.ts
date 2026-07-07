@@ -9,4 +9,6 @@ router.post("/createProperty", auth(Role.Tenant, Role.Landlord, Role.Admin), pro
 );
 
 router.get('/getProperty', propertyController.getAllProperties);
+
+router.get('/getProperty/:id', propertyController.getPropertyById);
 export const propertyRoutes = router;

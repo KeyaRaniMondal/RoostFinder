@@ -43,7 +43,25 @@ const getAllProperties = catchAsync(
 );
 
 
+//get property by id
+const getPropertyById = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params as { id: string }; // reads from URL, not req.body
+
+        const result = await propertyService.getPropertyById(id);
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "Property retrieved successfully",
+            data: result,
+        });
+    }
+);
+
+
 export const propertyController = {
     createProperty,
-    getAllProperties
+    getAllProperties,
+    getPropertyById
 };
