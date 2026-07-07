@@ -8,5 +8,5 @@ const router = Router();
 router.post("/createProperty", auth(Role.Tenant, Role.Landlord, Role.Admin), propertyController.createProperty
 );
 
-
+router.get('/getProperty', propertyController.getAllProperties);
 export const propertyRoutes = router;

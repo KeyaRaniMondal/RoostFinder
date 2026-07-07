@@ -1,31 +1,12 @@
-// import { prisma } from "../../lib/prisma";
-// import { IProperty } from "./property.interfece";
-
-// const createProperty = async (
-//     payload: IProperty,
-//     landlordId: string
-// ) => {
-//     // ensure landlord exists to avoid FK constraint errors
-//     const landlord = await prisma.landlord.findUnique({ where: { id: landlordId } });
-//     if (!landlord) throw new Error(`Landlord not found: ${landlordId}`);
-
-//     const property = await prisma.property.create({
-//         data: {
-//             ...(payload as any),
-//             landlord: { connect: { id: landlordId } },
-//         },
-//     });
-
-//     return property;
-// };
-
-// export const propertyService = {
-//     createProperty
-// };
-
+import httpStatus from "http-status";
+import { Request, Response, NextFunction } from "express";
 import { prisma } from "../../lib/prisma";
+import { catchAsync } from "../../utils/catchAsync";
 import { IProperty } from "./property.interfece";
+import { sendResponse } from "../../utils/sendResponse";
+import { Prisma } from "../../../prisma/generated/prisma/client";
 
+//property add
 const createProperty = async (
     payload: IProperty,
     userId: string // this is the logged-in User's id, not landlordId
@@ -51,6 +32,72 @@ const createProperty = async (
     return property;
 };
 
+//show all property
+const getAllProperties = async (query: Record<string, any>) => {
+    const {
+        searchTerm,
+        minPrice,
+        maxPrice,
+        propertyType,
+        purpose,
+        page = 1,
+        limit = 10,
+    } = query;
+
+    const where: Prisma.propertyWhereInput = {};
+
+    if (searchTerm) {
+        where.OR = [
+            { title: { contains: searchTerm, mode: "insensitive" } },
+            { district: { contains: searchTerm, mode: "insensitive" } },
+            { area: { contains: searchTerm, mode: "insensitive" } },
+        ];
+    }
+
+    if (propertyType) {
+        where.propertyType = propertyType;
+    }
+
+    if (purpose) {
+        where.purpose = purpose;
+    }
+
+    if (minPrice || maxPrice) {
+        where.price = {};
+        if (minPrice) {
+            (where.price as Prisma.FloatFilter).gte = Number(minPrice);
+        }
+        if (maxPrice) {
+            (where.price as Prisma.FloatFilter).lte = Number(maxPrice);
+        }
+    }
+
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 10;
+    const skip = (pageNum - 1) * limitNum;
+
+    const [data, total] = await Promise.all([
+        prisma.property.findMany({
+            where,
+            skip,
+            take: limitNum,
+            orderBy: { createdAt: "desc" },
+            include: { landlord: true },
+        }),
+        prisma.property.count({ where }),
+    ]);
+
+    return {
+        meta: {
+            page: pageNum,
+            limit: limitNum,
+            total,
+        },
+        data,
+    };
+};
+
 export const propertyService = {
     createProperty,
+    getAllProperties,
 };

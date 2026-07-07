@@ -1,36 +1,4 @@
-// import { PropertyPurpose, PropertyStatus, PropertyType } from "../../../prisma/generated/prisma/client";
 
-// export interface IProperty {
-//     title: string;
-//     description: string;
-
-//     propertyType: PropertyType;
-//     purpose: PropertyPurpose;
-
-//     price: number;
-
-//     division: string;
-//     district: string;
-//     area: string;
-//     address: string;
-
-//     bedrooms?: number;
-//     bathrooms?: number;
-//     balconies?: number;
-
-//     floor?: number;
-//     totalFloors?: number;
-
-//     areaSize: number;
-
-//     furnished: boolean;
-
-//     images: string[];
-
-//     landlordId: string;
-
-//     status?: PropertyStatus;
-// }
 
 import { PropertyPurpose, PropertyStatus, PropertyType } from "../../../prisma/generated/prisma/client";
 
