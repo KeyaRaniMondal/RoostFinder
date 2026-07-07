@@ -1,10 +1,32 @@
-enum ActiveStatus{
+enum ActiveStatus {
     ACTIVE
     BLOCKED
 }
 
-enum Role{
-    Tenant	
-    Landlord	
+enum Role {
+    Tenant
+    Landlord
     Admin
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  VILLA
+  OFFICE
+  LAND
+  SHOP
+}
+
+enum PropertyPurpose {
+  SALE
+  RENT
+}
+
+enum PropertyStatus {
+  ACTIVE
+  PENDING
+  SOLD
+  RENTED
+  REJECTED
 }

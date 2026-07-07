@@ -1,0 +1,27 @@
+model Landlord {
+  id              String   @id @default(cuid())
+
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  phone           String
+  address         String?
+  dateOfBirth     DateTime?
+
+  occupation      String?
+  companyName     String?
+
+  nidNumber       String? @unique
+  profilePhoto    String?
+
+  bio             String?
+
+  isVerified      Boolean  @default(false)
+  averageRating   Float    @default(0)
+  totalReviews    Int      @default(0)
+
+  properties      property[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

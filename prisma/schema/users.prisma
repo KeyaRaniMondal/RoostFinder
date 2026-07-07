@@ -1,12 +1,15 @@
-model User{
-    id  String  @id   @default(uuid())
-    name String @db.VarChar(255)
-    email String @unique
-    password String
+model User {
+    id           String       @id @default(uuid())
+    name         String       @db.VarChar(255)
+    email        String       @unique
+    password     String
     activeStatus ActiveStatus @default(ACTIVE)
-    role Role @default(Tenant)
-    createdAt DateTime @default(now())
-    updatedAt DateTime 
-    profiel Profile?
+    role         Role         @default(Tenant)
+    createdAt    DateTime     @default(now())
+    updatedAt    DateTime
+    profiel      Profile?
+    landLoard    Landlord?
+    properties   property[]
+
     @@map("users")
 }
