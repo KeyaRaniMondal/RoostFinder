@@ -11,8 +11,8 @@ const loginUser = async (payload: LoginUser) => {
     const user = await prisma.user.findUniqueOrThrow({
         where: { email: email as unknown as string }
     })
-    if (user.activeStatus === "BLOCKED") {
-        throw new Error('User is blocked! reach for support')
+    if (user.activeStatus === "BANNED") {
+        throw new Error('User is baned! reach for support')
     }
     const isPasswordMatched = await bcrypt.compare(String(password), String(user.password))
     if (!isPasswordMatched) {
@@ -60,8 +60,8 @@ const refreshToken = async (refreshToken: string) => {
         }
     })
 
-    if (user.activeStatus === "BLOCKED") {
-        throw new Error("User is blocked!")
+    if (user.activeStatus === "BANNED") {
+        throw new Error("User is baned!")
     }
 
     const jwtPayload = {
