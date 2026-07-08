@@ -1,0 +1,20 @@
+{
+      "name":"mansion",
+      "email":"mansion@gmail.com",
+      "password":"mansion1/*",
+      "profilePhoto":"https://saterdesign.com/cdn/shop/files/9024-Main-Image_2000x.jpg?v=1744743942"
+}
+{
+      "name":"admin1",
+      "email":"admin1@gmail.com",
+      "password":"admin1/*",
+      "Role":"Admin",
+      "profilePhoto":"https://saterdesign.com/cdn/shop/files/9024-Main-Image_2000x.jpg?v=1744743952"
+}
+{
+      "name":"landlord1",
+      "email":"landlord1@gmail.com",
+      "password":"landlord1/*",
+      "Role":"Landlord",
+      "profilePhoto":"https://saterdesign.com/cdn/shop/files/9024-Main-Image_2000x.jpg?v=1744743953"
+}

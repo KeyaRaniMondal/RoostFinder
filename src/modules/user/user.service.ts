@@ -2,9 +2,11 @@ import bcrypt from 'bcryptjs'
 import config from '../../config'
 import { prisma } from '../../lib/prisma'
 import { RegisterUserPayload } from './user.interface'
+import { Role } from '../../../prisma/generated/prisma/enums'
 
 const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   const { name, email, password, profilePhoto } = payload
+  const rawRole = payload.role ?? (payload as RegisterUserPayload & { Role?: string }).Role ?? 'Tenant'
 
   const existingUser = await prisma.user.findUnique({
     where: { email },
@@ -14,6 +16,13 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
     throw new Error('User already exists')
   }
 
+  const normalizedRole = String(rawRole).trim().toLowerCase()
+  const finalRole: Role = normalizedRole === 'admin'
+    ? 'Admin'
+    : normalizedRole === 'landlord'
+      ? 'Landlord'
+      : 'Tenant'
+
   const saltRounds = Number(config.BCRYPT_SALT_ROUNDS) || 10
   const hashedPassword = await bcrypt.hash(password, saltRounds)
 
@@ -22,6 +31,7 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
       name,
       email,
       password: hashedPassword,
+      role: finalRole,
       profiel: {
         create: {
           profilePhoto: profilePhoto ?? null,
@@ -46,18 +56,18 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   return user;
 }
 
-const getMyProfileFromDb = async (userId : string) => {
-    const user = await prisma.user.findUniqueOrThrow({
-        where : {id : userId},
-        omit : {
-            password : true
-        },
-        include : {
-            profiel  : true
-        }
-    });
+const getMyProfileFromDb = async (userId: string) => {
+  const user = await prisma.user.findUniqueOrThrow({
+    where: { id: userId },
+    omit: {
+      password: true
+    },
+    include: {
+      profiel: true
+    }
+  });
 
-    return user;
+  return user;
 }
 
 export const userService = {
