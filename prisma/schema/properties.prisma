@@ -25,9 +25,9 @@ model property {
 
   furnished Boolean @default(false)
 
-  images String[]
-
-  status PropertyStatus @default(ACTIVE)
+  images    String[]
+  amenities PropertyAmenity[]
+  status    PropertyStatus    @default(ACTIVE)
 
   landlordId String
   landlord   Landlord @relation(fields: [landlordId], references: [id], onDelete: Cascade)

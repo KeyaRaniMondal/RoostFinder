@@ -11,10 +11,51 @@
       "Role":"Admin",
       "profilePhoto":"https://saterdesign.com/cdn/shop/files/9024-Main-Image_2000x.jpg?v=1744743952"
 }
+//admin login
+{
+  "email": "admin123@gmail.com",
+  "password": "admin123./*"
+
+}
+
 {
       "name":"landlord1",
       "email":"landlord1@gmail.com",
       "password":"landlord1/*",
       "Role":"Landlord",
       "profilePhoto":"https://saterdesign.com/cdn/shop/files/9024-Main-Image_2000x.jpg?v=1744743953"
+}
+{
+        "email": "landlord22@gmail.com",
+  "password": "landlord22./*"
+  "phone": "015676779989",
+  "address": "House 10, Road 5, Dhanmondi, Dhaka",
+  "occupation": "Business Owner",
+  "companyName": "zzzzzzzzz Enterprises",
+  "bio": "Trusted landlord with 3 properties in Dhaka."
+}
+
+{
+  "title": "Modern 2-Bed Apartment in Dhanmondi",
+  "description": "A spacious, well-lit apartment close to main road, with parking.",
+  "propertyType": "APARTMENT",
+  "purpose": "RENT",
+  "price": 25000,
+  "country": "Bangladesh",
+  "division": "Dhaka",
+  "district": "Dhaka",
+  "city": "Dhaka",
+  "area": "Dhanmondi",
+  "address": "House 12, Road 5, Dhanmondi",
+  "bedrooms": 2,
+  "bathrooms": 2,
+  "balconies": 1,
+  "floor": 3,
+  "totalFloors": 6,
+  "areaSize": 1200,
+  "furnished": true,
+  "images": [
+    "https://example.com/images/property1.jpg",
+    "https://example.com/images/property2.jpg"
+  ]
 }

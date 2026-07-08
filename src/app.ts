@@ -27,6 +27,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, World!')
 })
 
+//All Routes for request functionality
 app.use('/api/auth', userRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/properties', propertyRoutes)

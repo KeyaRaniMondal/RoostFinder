@@ -4,7 +4,7 @@ import { prisma } from "../../lib/prisma";
 import { catchAsync } from "../../utils/catchAsync";
 import { IProperty } from "./property.interfece";
 import { sendResponse } from "../../utils/sendResponse";
-import { Prisma } from "../../../prisma/generated/prisma/client";
+import { Prisma, PropertyAmenity } from "../../../prisma/generated/prisma/client";
 
 //property add
 const createProperty = async (
@@ -22,11 +22,63 @@ const createProperty = async (
         );
     }
 
+    // Normalize and validate amenities 
+    const AMENITY_MAP: Record<string, PropertyAmenity> = {
+        "security": "SECURITY_24_7",
+        "elevator": "ELEVATOR",
+        "generator": "GENERATOR_BACKUP",
+        "cctv": "CCTV_SURVEILLANCE",
+        "ac": "CENTRAL_AC",
+        "garden": "ROOFTOP_GARDEN",
+        "gym": "GYM_ACCESS",
+        "wifi": "WIFI",
+        "parking": "PARKING",
+        "gas": "PREPAID_GAS"
+    };
+
+    const data: any = { ...(payload as any), landlordId: landlord.id };
+
+    if ((payload as any).amenities) {
+        const incoming: any[] = (payload as any).amenities;
+        if (!Array.isArray(incoming)) {
+            throw new Error("amenities must be an array of strings or enum keys");
+        }
+
+        const mapped: PropertyAmenity[] = [];
+        const unknown: string[] = [];
+
+        const enumValues = (Object.values(PropertyAmenity) as string[]);
+        for (const a of incoming) {
+            const key = String(a).toLowerCase().trim();
+            let mappedVal: PropertyAmenity | undefined;
+
+            if (AMENITY_MAP[key]) {
+                mappedVal = AMENITY_MAP[key];
+            } else if (enumValues.includes(String(a))) {
+                mappedVal = String(a) as PropertyAmenity;
+            } else if (enumValues.includes(String(a).toUpperCase())) {
+                mappedVal = String(a).toUpperCase() as PropertyAmenity;
+            } else {
+                // try matching by normalized enum (case-insensitive)
+                const found = enumValues.find((ev) => ev.toLowerCase() === key);
+                if (found) mappedVal = found as PropertyAmenity;
+            }
+
+            if (mappedVal) mapped.push(mappedVal as PropertyAmenity);
+            else unknown.push(String(a));
+        }
+
+        if (unknown.length) {
+            throw new Error(
+                `Unknown amenities: ${unknown.join(", ")}. Send valid enum values (e.g. SECURITY_24_7) or use a supported friendly name.`
+            );
+        }
+
+        data.amenities = mapped;
+    }
+
     const property = await prisma.property.create({
-        data: {
-            ...(payload as any),
-            landlordId: landlord.id, // use Landlord.id, not User.id
-        },
+        data,
     });
 
     return property;
