@@ -1,12 +1,12 @@
 enum ActiveStatus {
-    ACTIVE
-    BANNED
+  ACTIVE
+  BANNED
 }
 
 enum Role {
-    Tenant
-    Landlord
-    Admin
+  Tenant
+  Landlord
+  Admin
 }
 
 enum PropertyType {
@@ -36,4 +36,11 @@ enum RentalStatus {
   PENDING
   REJECTED
   COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
 }

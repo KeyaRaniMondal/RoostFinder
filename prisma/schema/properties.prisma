@@ -1,41 +1,41 @@
 model property {
-  id            String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  title         String
-  description   String
+  title       String
+  description String
 
-  propertyType  PropertyType
-  purpose       PropertyPurpose
+  propertyType PropertyType
+  purpose      PropertyPurpose
 
-  price         Float
+  price Float
 
-  country       String
-  division      String
-  district      String
-  city          String
-  area          String
-  address       String
+  country  String
+  division String
+  district String
+  city     String
+  area     String
+  address  String
 
-  bedrooms      Int?
-  bathrooms     Int?
-  balconies     Int?
-  floor         Int?
-  totalFloors   Int?
-  areaSize      Float?
+  bedrooms    Int?
+  bathrooms   Int?
+  balconies   Int?
+  floor       Int?
+  totalFloors Int?
+  areaSize    Float?
 
-  furnished     Boolean @default(false)
+  furnished Boolean @default(false)
 
-  images         String[]
+  images String[]
 
-  status        PropertyStatus @default(ACTIVE)
+  status PropertyStatus @default(ACTIVE)
 
-  landlordId    String
-  landlord      Landlord @relation(fields: [landlordId], references: [id], onDelete: Cascade)
+  landlordId String
+  landlord   Landlord @relation(fields: [landlordId], references: [id], onDelete: Cascade)
 
-rentalRequests RentalRequest[]
-
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  rentalRequests RentalRequest[]
+  payments       Payment[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
   @@map("properties")
 }
