@@ -1,6 +1,6 @@
 import app from "./app"
-import config from "./config/index.js"
-import { prisma } from './lib/prisma.js'
+import config from "./config/index"
+import { prisma } from './lib/prisma'
 
 async function main() {
     const port = config.PORT || 5000
@@ -11,8 +11,8 @@ async function main() {
         })
     }
     catch (error) {
-        await prisma.$disconnect()
-        console.log(error)
+        // await prisma.$disconnect()
+        // console.log(error)
         process.exit(1)
     }
 }

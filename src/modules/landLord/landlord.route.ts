@@ -1,6 +1,6 @@
 import express from "express";
 import { auth } from "../../middlewares/auth";
-import { Role } from "../../../prisma/generated/prisma/client";
+import { Role } from "@prisma/client";
 import { landlordController } from "./landloed.controller";
 import { propertyRoutes } from "../properties/property.route";
 

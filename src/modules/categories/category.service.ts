@@ -1,4 +1,4 @@
-import { PropertyType } from "../../../prisma/generated/prisma/client";
+import { PropertyType } from "@prisma/client";
 
 const getAllCategories = async () => {
     const categories = Object.values(PropertyType);

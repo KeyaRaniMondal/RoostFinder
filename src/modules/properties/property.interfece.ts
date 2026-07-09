@@ -1,6 +1,6 @@
 
 
-import { PropertyPurpose, PropertyStatus, PropertyType } from "../../../prisma/generated/prisma/client";
+import { PropertyPurpose, PropertyStatus, PropertyType } from "@prisma/client";
 
 export interface IProperty {
     title: string;

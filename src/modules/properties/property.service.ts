@@ -4,7 +4,7 @@ import { prisma } from "../../lib/prisma";
 import { catchAsync } from "../../utils/catchAsync";
 import { IProperty } from "./property.interfece";
 import { sendResponse } from "../../utils/sendResponse";
-import { Prisma, PropertyAmenity } from "../../../prisma/generated/prisma/client";
+import { Prisma, PropertyAmenity } from "@prisma/client";
 
 //property add
 const createProperty = async (
