@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { paymentService } from "./payment.service";
+import { stripe } from "../../lib/stripe";
+import config from "../../config";
 
 const createPaymentSession = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -19,6 +21,28 @@ const createPaymentSession = catchAsync(
             message: "Payment session created successfully",
             data: result,
         });
+    }
+);
+
+// Actual Stripe webhook — separate route, uses raw body + signature verification
+const stripeWebhook = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const sig = req.headers["stripe-signature"] as string;
+        let event;
+
+        try {
+            event = stripe.webhooks.constructEvent(
+                req.body, // must be raw buffer — see route setup below
+                sig,
+                config.STRIPE_WEBHOOK_SECRET as string
+            );
+        } catch (err: any) {
+            return res.status(400).send(`Webhook Error: ${err.message}`);
+        }
+
+        await paymentService.handleWebhookEvent(event);
+
+        res.json({ received: true });
     }
 );
 
@@ -72,6 +96,7 @@ const getSinglePayment = catchAsync(
 
 export const paymentController = {
     createPaymentSession,
+    stripeWebhook ,
     confirmPayment,
     getMyPayments,
     getSinglePayment,

@@ -71,6 +71,28 @@ const createPaymentSession = async (tenantId: string, payload: ICreatePayment) =
         },
     });
 
+    
+// Used by the Stripe webhook, not the confirm endpoint directly service
+const handleWebhookEvent = async (event: any) => {
+    if (event.type === "checkout.session.completed") {
+        const session = event.data.object;
+        await confirmPayment(session.id);
+    }
+
+    if (event.type === "checkout.session.expired") {
+        const session = event.data.object;
+        const payment = await prisma.payment.findUnique({
+            where: { stripeSessionId: session.id },
+        });
+        if (payment) {
+            await prisma.payment.update({
+                where: { id: payment.id },
+                data: { status: "FAILED" },
+            });
+        }
+    }
+};
+
     const updatedPayment = await prisma.payment.update({
         where: { id: paymentRecord.id },
         data: {
@@ -151,6 +173,7 @@ const getSinglePayment = async (tenantId: string, id: string) => {
 
 export const paymentService = {
     createPaymentSession,
+    handleWebhookEvent,
     confirmPayment,
     getMyPayments,
     getSinglePayment,

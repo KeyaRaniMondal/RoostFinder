@@ -10,8 +10,15 @@ import { categoryRoutes } from './modules/categories/category.route.js'
 import { rentalRoutes } from './modules/rental/rental.route.js'
 import { adminRoutes } from './modules/admin/admin.route.js'
 import { paymentRoutes } from './modules/payments/payment.route.js'
+import { paymentController } from './modules/payments/payment.controller.js'
 
 const app: Application = express()
+
+app.post(
+    "/api/payments/webhook",
+    express.raw({ type: "application/json" }),
+    paymentController.stripeWebhook
+);
 
 // middleware
 app.use(express.json())

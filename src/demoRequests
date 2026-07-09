@@ -36,6 +36,18 @@
 }
 
 {
+  "email": "landlordnew@gmail.com",
+  "password": "landlordnew22./*"
+}
+{
+  "name": "landlordNew",
+  "email": "landlordnew@gmail.com",
+  "password": "landlordnew22./*",
+  "role": "Landlord",
+  "profilePhoto": "https://saterdesign.com/cdn/shop/files/9024-Main-Image_2000x.jpg?v=1744743965"
+}
+
+{
   "title": "Modern 2-Bed Apartment in Dhanmondi",
   "description": "A spacious, well-lit apartment close to main road, with parking.",
   "propertyType": "APARTMENT",
