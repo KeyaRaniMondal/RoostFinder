@@ -11,6 +11,6 @@ model User {
     landLoard      Landlord?
     rentalRequests RentalRequest[]
     payments       Payment[]
-
+review   Review[]
     @@map("users")
 }

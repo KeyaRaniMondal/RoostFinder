@@ -11,6 +11,7 @@ model RentalRequest {
   message    String?
   moveInDate DateTime?
   payment    Payment?
+  review   Review[]
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
 
