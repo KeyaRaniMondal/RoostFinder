@@ -1,5 +1,4 @@
 
-import { prisma } from "../../lib/prisma";
 import { catchAsync } from "../../utils/catchAsync";
 import { Request, Response, NextFunction } from "express";
 import { sendResponse } from "../../utils/sendResponse";
@@ -59,9 +58,54 @@ const getPropertyById = catchAsync(
     }
 );
 
+const updateProperty = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.user?.id;
+        const role = req.user?.role;
+        const { id } = req.params as { id: string };
+        const payload = req.body;
+
+        const result = await propertyService.updateProperty(
+            id,
+            payload,
+            userId as string,
+            role as any
+        );
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "Property updated successfully",
+            data: result,
+        });
+    }
+);
+
+const deleteProperty = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.user?.id;
+        const role = req.user?.role;
+        const { id } = req.params as { id: string };
+
+        const result = await propertyService.deleteProperty(
+            id,
+            userId as string,
+            role as any
+        );
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "Property deleted successfully",
+            data: result,
+        });
+    }
+);
 
 export const propertyController = {
     createProperty,
     getAllProperties,
-    getPropertyById
+    getPropertyById,
+    updateProperty,
+    deleteProperty
 };

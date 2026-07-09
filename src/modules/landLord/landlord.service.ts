@@ -65,8 +65,84 @@ const updateLandlordProfile = async (
     return landlord;
 };
 
+const getRentalRequests = async (userId: string) => {
+    const landlord = await prisma.landlord.findUnique({
+        where: { userId },
+    });
+
+    if (!landlord) {
+        throw new Error("Landlord profile not found.");
+    }
+
+    const requests = await prisma.rentalRequest.findMany({
+        where: {
+            property: {
+                landlordId: landlord.id,
+            },
+        },
+        include: {
+            property: true,
+            tenant: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                },
+            },
+        },
+        orderBy: { createdAt: "desc" },
+    });
+
+    return requests;
+};
+
+const updateRentalRequestStatus = async (
+    userId: string,
+    requestId: string,
+    status: string
+) => {
+    const landlord = await prisma.landlord.findUnique({
+        where: { userId },
+    });
+
+    if (!landlord) {
+        throw new Error("Landlord profile not found.");
+    }
+
+    const request = await prisma.rentalRequest.findUnique({
+        where: { id: requestId },
+        include: {
+            property: true,
+        },
+    });
+
+    if (!request) {
+        throw new Error("Rental request not found.");
+    }
+
+    if (request.property.landlordId !== landlord.id) {
+        throw new Error("You are not authorized to manage this rental request.");
+    }
+
+    const normalizedStatus = String(status).toUpperCase();
+    if (!["APPROVED", "REJECTED"].includes(normalizedStatus)) {
+        throw new Error("Status must be APPROVED or REJECTED.");
+    }
+
+    const updatedRequest = await prisma.rentalRequest.update({
+        where: { id: requestId },
+        data: {
+            status: normalizedStatus as any,
+        },
+    });
+
+    return updatedRequest;
+};
+
 export const landlordService = {
     createLandlordProfile,
     getMyLandlordProfile,
     updateLandlordProfile,
+    getRentalRequests,
+    updateRentalRequestStatus,
 };

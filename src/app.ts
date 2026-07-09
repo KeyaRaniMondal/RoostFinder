@@ -1,15 +1,15 @@
 import express, { Application, Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import config from './config'
-import { userRoutes } from './modules/user/user.route'
-import { authRoutes } from './modules/auth/auth.route'
-import { propertyRoutes } from './modules/properties/property.route'
-import { landlordRoutes } from './modules/landLord/landlord.route'
-import { categoryRoutes } from './modules/categories/category.route'
-import { rentalRoutes } from './modules/rental/rental.route'
-import { adminRoutes } from './modules/admin/admin.route'
-import { paymentRoutes } from './modules/payments/payment.route'
+import config from './config/index.js'
+import { userRoutes } from './modules/user/user.route.js'
+import { authRoutes } from './modules/auth/auth.route.js'
+import { propertyRoutes } from './modules/properties/property.route.js'
+import { landlordRoutes } from './modules/landLord/landlord.route.js'
+import { categoryRoutes } from './modules/categories/category.route.js'
+import { rentalRoutes } from './modules/rental/rental.route.js'
+import { adminRoutes } from './modules/admin/admin.route.js'
+import { paymentRoutes } from './modules/payments/payment.route.js'
 
 const app: Application = express()
 
@@ -32,7 +32,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/auth', userRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/properties', propertyRoutes)
-app.use('/api/landlords', landlordRoutes);
+app.use('/api/landlord', landlordRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/rentals", rentalRoutes);
 app.use("/api/admin", adminRoutes);
