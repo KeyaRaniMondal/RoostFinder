@@ -15,10 +15,7 @@ import { reviewRoutes } from './modules/review/review.route'
 
 const app: Application = express()
 
-app.post(
-    "/api/payments/webhook",
-    express.raw({ type: "application/json" }),
-    paymentController.stripeWebhook
+app.post("/api/payments/webhook", express.raw({ type: "application/json" }), paymentController.stripeWebhook
 );
 
 // middleware
@@ -45,6 +42,6 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/rentals", rentalRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/payments", paymentRoutes);
-app.use("/reviews", reviewRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 export default app

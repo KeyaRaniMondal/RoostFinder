@@ -20,7 +20,7 @@
 
 {
       "name":"landlord1",
-      "email":"landlord1@gmail.com",
+      "email":"landlord1@gmail.com",//last property
       "password":"landlord1/*",
       "Role":"Landlord",
       "profilePhoto":"https://saterdesign.com/cdn/shop/files/9024-Main-Image_2000x.jpg?v=1744743953"
@@ -45,6 +45,51 @@
   "password": "landlordnew22./*",
   "role": "Landlord",
   "profilePhoto": "https://saterdesign.com/cdn/shop/files/9024-Main-Image_2000x.jpg?v=1744743965"
+}
+
+//landlord
+  "email": "landowner@gmail.com",
+  "password": "lans234./*"
+
+    "success": true,
+    "statusCode": 201,
+    "message": "Property created successfully",
+    "data": {
+        "id": "cmrekxihw000204l7v0n3azqp",
+        "title": "2 bhk flat in dhaka",
+        "description": "Affordable residential flat in a quiet and peaceful neighborhood. Ideal for a small family.",
+        "propertyType": "APARTMENT",
+        "purpose": "RENT",
+        "price": 26000,
+        "country": "Bangladesh",
+        "division": "Dhaka",
+        "district": "Dhaka",
+        "city": "Dhaka",
+        "area": "Upashahar",
+        "address": "Block D, Main Road, Upashahar",
+        "bedrooms": 2,
+        "bathrooms": 2,
+        "balconies": 1,
+        "floor": 1,
+        "totalFloors": 4,
+        "areaSize": 1050,
+        "furnished": false,
+        "images": [
+            "https://house.com/images/syl_flat1.jpg"
+        ],
+        "amenities": [
+            "SECURITY_24_7",
+            "ELEVATOR",
+            "GENERATOR_BACKUP",
+            "CCTV_SURVEILLANCE",
+            "CENTRAL_AC",
+            "ROOFTOP_GARDEN"
+        ],
+        "status": "ACTIVE",
+        "landlordId": "cmrektu04000104l7igiwjs0e",
+        "createdAt": "2026-07-10T06:53:35.588Z",
+        "updatedAt": "2026-07-10T06:53:35.588Z"
+    }
 }
 
 {
