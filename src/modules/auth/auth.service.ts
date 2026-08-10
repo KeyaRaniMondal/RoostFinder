@@ -1,4 +1,4 @@
-import { LoginUser } from "./auth.interface";
+import { GoogleLoginPayload, LoginUser } from "./auth.interface";
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 import { jwtUtils } from "../../utils/jwt";
@@ -32,6 +32,71 @@ const loginUser = async (payload: LoginUser) => {
         config.JWT_ACCESS_EXPIRES_IN as SignOptions
     );
 
+
+    const refreshToken = jwtUtils.createToken(
+        jwtPayload,
+        config.JWT_REFRESH_SECRET!,
+        config.JWT_REFRESH_EXPIRES_IN as SignOptions
+    );
+
+    return {
+        accessToken,
+        refreshToken
+    };
+}
+
+const googleLogin = async (payload: GoogleLoginPayload) => {
+    const { name, email, emailVerified, image } = payload
+
+    if (!email) {
+        throw new Error('Email is required')
+    }
+
+    let user = await prisma.user.findUnique({
+        where: { email },
+        include: { profiel: true }
+    })
+
+    if (!user) {
+        user = await prisma.user.create({
+            data: {
+                name: name ?? email.split('@')[0],
+                email,
+                emailVerified: emailVerified ? new Date() : null,
+                image: image ?? null,
+                password: null,
+                role: 'Tenant',
+                profiel: {
+                    create: { profilePhoto: image ?? null }
+                }
+            },
+            include: { profiel: true }
+        })
+    } else if (!user.profiel) {
+        await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                profiel: { create: { profilePhoto: image ?? null } }
+            }
+        })
+    }
+
+    if (user.activeStatus === "BANNED") {
+        throw new Error('User is baned! reach for support')
+    }
+
+    const jwtPayload = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+    }
+
+    const accessToken = jwtUtils.createToken(
+        jwtPayload,
+        config.JWT_ACCESS_SECRET!,
+        config.JWT_ACCESS_EXPIRES_IN as SignOptions
+    );
 
     const refreshToken = jwtUtils.createToken(
         jwtPayload,
@@ -84,5 +149,6 @@ const refreshToken = async (refreshToken: string) => {
 
 export const authService = {
     loginUser,
+    googleLogin,
     refreshToken
 }
