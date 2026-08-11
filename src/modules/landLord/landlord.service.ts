@@ -1,6 +1,13 @@
 import { prisma } from "../../lib/prisma";
 import { ICreateLandlord, IUpdateLandlord } from "./landlord.interface";
 
+const normalizeDateOfBirth = (value?: Date | string): Date | undefined => {
+    if (!value) return undefined;
+    if (value instanceof Date) return value;
+    const iso = /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00.000Z` : value;
+    return new Date(iso);
+};
+
 const createLandlordProfile = async (
     userId: string,
     payload: ICreateLandlord
@@ -16,6 +23,7 @@ const createLandlordProfile = async (
     const landlord = await prisma.landlord.create({
         data: {
             ...payload,
+            dateOfBirth: normalizeDateOfBirth(payload.dateOfBirth as Date | string) ?? null,
             userId,
         },
     });
@@ -59,7 +67,10 @@ const updateLandlordProfile = async (
 
     const landlord = await prisma.landlord.update({
         where: { userId },
-        data: payload,
+        data: {
+            ...payload,
+            dateOfBirth: normalizeDateOfBirth(payload.dateOfBirth as Date | string),
+        },
     });
 
     return landlord;
