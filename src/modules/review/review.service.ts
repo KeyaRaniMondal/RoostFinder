@@ -10,6 +10,7 @@ const createReview = async (tenantId: string, payload: ICreateReview) => {
 
     const rentalRequest = await prisma.rentalRequest.findUnique({
         where: { id: rentalRequestId },
+        include: { payment: true },
     });
 
     if (!rentalRequest) {
@@ -20,8 +21,13 @@ const createReview = async (tenantId: string, payload: ICreateReview) => {
         throw new Error("You are not authorized to review this rental");
     }
 
-    if (rentalRequest.status !== "COMPLETED") {
-        throw new Error("You can only review a rental after it has been completed");
+    const isActiveRental =
+        rentalRequest.status === "COMPLETED" ||
+        (rentalRequest.status === "APPROVED" &&
+            rentalRequest.payment?.status === "SUCCEEDED");
+
+    if (!isActiveRental) {
+        throw new Error("You can only review a rental after your rental is active or completed");
     }
 
     const existingReview = await prisma.review.findUnique({

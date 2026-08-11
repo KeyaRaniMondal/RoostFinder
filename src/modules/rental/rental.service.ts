@@ -42,6 +42,7 @@ const getMyRentalRequests = async (tenantId: string) => {
         where: { tenantId },
         include: {
             property: true,
+            payment: true,
         },
         orderBy: { createdAt: "desc" },
     });
@@ -57,6 +58,7 @@ const getSingleRentalRequestDetails = async (tenantId: string, id: string) => {
             property: {
                 include: { landlord: true },
             },
+            payment: true,
         },
     });
 
