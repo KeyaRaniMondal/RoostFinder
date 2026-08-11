@@ -21,6 +21,7 @@ Brief mapping of **frontend components → backend endpoints**. Backend is an Ex
 | Auth | `POST /api/auth/login` | — | `hooks/use-auth.tsx` (`login`) → `app/auth/login/page.tsx` |
 | Auth | `POST /api/auth/refresh-token` | — | Not used by the UI (access token is the session); kept for API clients |
 | Auth | `GET /api/auth/me` | any | `hooks/use-auth.tsx` (`refreshMe`) on app mount |
+| Auth | `PATCH /api/auth/me` (`{ name?, email?, profilePhoto?, bio? }`) | any | `hooks/use-auth.tsx` (`updateProfile`) → `app/dashboard/profile/page.tsx` |
 | Categories | `GET /api/categories` | — | `hooks/use-properties.ts` (`useCategories`) → `components/properties/filter-sidebar.tsx` (type filter) |
 | Properties | `GET /api/properties` (`searchTerm,minPrice,maxPrice,propertyType,purpose,page,limit`) | — | `hooks/use-properties.ts` (`useProperties`, `useLandlordProperties`) → `app/properties/page.tsx`, `app/page.tsx` (SSR), landlord dashboards |
 | Properties | `GET /api/properties/:id` | — | `hooks/use-properties.ts` (`useProperty`) + `serverFetch` → `app/properties/[id]/page.tsx`, landlord edit page |
