@@ -12,6 +12,7 @@ import { adminRoutes } from './modules/admin/admin.route'
 import { paymentRoutes } from './modules/payments/payment.route'
 import { paymentController } from './modules/payments/payment.controller'
 import { reviewRoutes } from './modules/review/review.route'
+import { uploadsRoutes } from './modules/uploads/uploads.route'
 
 const app: Application = express()
 
@@ -43,5 +44,6 @@ app.use("/api/rentals", rentalRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/uploads", uploadsRoutes);
 
 export default app

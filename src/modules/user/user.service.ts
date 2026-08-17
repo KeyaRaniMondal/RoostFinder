@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs'
 import config from '../../config/index'
 import { prisma } from '../../lib/prisma'
+import { uploadBuffer, default as cloudinary } from '../../lib/cloudinary'
 import { RegisterUserPayload, UpdateProfilePayload } from './user.interface'
 import { Role } from '@prisma/client'
 
@@ -110,8 +111,36 @@ const updateMyProfile = async (userId: string, payload: UpdateProfilePayload) =>
   return getMyProfileFromDb(userId);
 }
 
+const uploadProfileImage = async (buffer: Buffer, userId: string) => {
+  const currentUser = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { imagePublicId: true, imageUrl: true },
+  });
+
+  const { url, publicId } = await uploadBuffer(buffer, "profiles");
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      imageUrl: url,
+      imagePublicId: publicId,
+    },
+    omit: {
+      password: true,
+    },
+  });
+
+  // Delete previous profile image from Cloudinary
+  if (currentUser?.imagePublicId) {
+    await cloudinary.uploader.destroy(currentUser.imagePublicId);
+  }
+
+  return updatedUser;
+};
+
 export const userService = {
   registerUserIntoDB,
   getMyProfileFromDb,
-  updateMyProfile
+  updateMyProfile,
+  uploadProfileImage
 }

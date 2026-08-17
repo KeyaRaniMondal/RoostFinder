@@ -12,5 +12,8 @@ export default {
     JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
     JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    	cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+	cloudinary_api_key: process.env.CLOUDINARY_API_KEY!,
+	cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET!,
 }

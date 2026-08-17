@@ -4,6 +4,8 @@ model User {
     email          String          @unique
     emailVerified  DateTime?
     image          String?
+    imageUrl       String? 
+    imagePublicId  String? 
     password       String?
     activeStatus   ActiveStatus    @default(ACTIVE)
     role           Role            @default(Tenant)
